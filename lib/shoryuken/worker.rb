@@ -172,7 +172,7 @@ module Shoryuken
       #     end
       #   end
       def shoryuken_options(opts = {})
-        self.shoryuken_options_hash = get_shoryuken_options.merge(stringify_keys(opts || {}))
+        self.shoryuken_options_hash = Shoryuken::Helpers::HashUtils.deep_stringify_keys(get_shoryuken_options.merge((opts || {})))
         normalize_worker_queue!
       end
 

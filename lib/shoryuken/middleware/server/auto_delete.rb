@@ -6,6 +6,8 @@ module Shoryuken
       # Middleware that automatically deletes messages after successful processing.
       # Only deletes messages when the worker has auto_delete enabled.
       class AutoDelete
+        MAX_BATCH_SIZE = 10
+
         # Processes a message and deletes it if auto_delete is enabled
         #
         # @param worker [Object] the worker instance
@@ -19,9 +21,11 @@ module Shoryuken
 
           return unless worker.class.auto_delete?
 
-          entries = [sqs_msg].flatten.map.with_index { |message, i| { id: i.to_s, receipt_handle: message.receipt_handle } }
+          Shoryuken::Helpers::ArrayUtils.in_groups_of([sqs_msg].flatten, MAX_BATCH_SIZE, false).each do |sqs_msgs|
+            entries = sqs_msgs.map.with_index { |message, i| { id: i.to_s, receipt_handle: message.receipt_handle } }
 
-          Shoryuken::Client.queues(queue).delete_messages(entries: entries)
+            Shoryuken::Client.queues(queue).delete_messages(entries: entries)
+          end
         end
       end
     end

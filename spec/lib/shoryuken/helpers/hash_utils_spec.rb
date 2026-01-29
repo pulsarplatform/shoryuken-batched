@@ -142,4 +142,20 @@ RSpec.describe Shoryuken::Helpers::HashUtils do
       end
     end
   end
+
+  describe '.deep_stringify_keys' do
+    it 'converts keys into strings' do
+      expect(described_class.deep_stringify_keys({ :key1 => 'value1',
+               'key2' => 'value2',
+               :key3 => {
+                 'key31' => { key311: 'value311' },
+                 :key32 => 'value32'
+               } })).to eq('key1' => 'value1',
+                                              'key2' => 'value2',
+                                              'key3' => {
+                                                'key31' => { 'key311' => 'value311' },
+                                                'key32' => 'value32'
+                                              })
+    end
+  end
 end

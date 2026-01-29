@@ -50,6 +50,15 @@ module Shoryuken
             result[symbol_key] = value.is_a?(Hash) ? deep_symbolize_keys(value) : value
           end
         end
+
+        def deep_stringify_keys(hash)
+          return hash unless hash.is_a?(Hash)
+
+          hash.each_with_object({}) do |(key, value), result|
+            symbol_key = key.is_a?(Symbol) ? key.to_s : key
+            result[symbol_key] = value.is_a?(Hash) ? deep_stringify_keys(value) : value
+          end
+        end
       end
     end
   end
