@@ -16,7 +16,7 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ['lib']
 
-  spec.add_dependency 'aws-sdk-sqs', '= 1.52.0'
+  spec.add_dependency 'aws-sdk-sqs', '>= 1.66.0'
   spec.add_dependency 'concurrent-ruby'
   spec.add_dependency 'thor'
   spec.add_dependency 'zeitwerk', '~> 2.6'
